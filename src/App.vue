@@ -1,16 +1,58 @@
 <template>
   <div id="app">
-    <NaverMap />
+    <div class="menu" :class="{ 'menu-open': menuOpen }">
+      <div class="user">
+        <v-btn class="collapse-btn" elevation="0" @click="menuOpen = !menuOpen">
+          <span v-if="menuOpen">&laquo;</span>
+          <span v-else>&raquo;</span>
+        </v-btn>
+      </div>
+      <transition name="fade">
+        <p class="user-name" v-if="menuOpen">John Doe</p>
+      </transition>
+
+      <v-expansion-panels>
+        <v-expansion-panel title="Chatting" v-show="menuOpen">
+          <v-expansion-panel-text>
+            <ChatMenu />
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+        <v-expansion-panel title="Routing" v-show="menuOpen">
+          <v-expansion-panel-text>
+            <RouteMenu />
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </div>
+    <NaverMap class="map" />
   </div>
 </template>
 
 <script>
 import NaverMap from "./components/NaverMap.vue";
+import ChatMenu from "./components/menu/ChatMenu.vue";
+import RouteMenu from "./components/menu/RouteMenu.vue";
 
 export default {
   name: "App",
   components: {
     NaverMap,
+    ChatMenu,
+    RouteMenu,
+  },
+  data() {
+    return {
+      menuOpen: true,
+    };
+  },
+  methods: {
+    onChatMenuInput() {
+      console.log("onChatMenuInput");
+      this.chatMenuOpen = !this.chatMenuOpen;
+    },
+    onChatMenuHeaderClick() {
+      console.log("onChatMenuHeaderClick");
+    },
   },
 };
 </script>
@@ -20,5 +62,67 @@ export default {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+#app {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+}
+
+.menu {
+  width: 70px;
+  height: 100%;
+  border-right: 1px solid grey;
+  transition: all 0.4s ease-in-out;
+}
+
+.menu-open {
+  width: 20%;
+}
+
+.map {
+  width: 80%;
+  height: 100%;
+  background-color: white;
+}
+
+.user {
+  display: flex;
+  height: 50px;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0px;
+  margin: 0px;
+}
+
+.user-name {
+  display: flex;
+  margin: 0px;
+  margin-left: 25px;
+  padding: 0px;
+  width: 80%;
+  height: 50px;
+  align-items: center;
+}
+
+.transit-text {
+  transition: all 3s ease-in-out;
+}
+
+.collapse-btn {
+  font-size: 24px;
+}
+
+.fade-enter-active {
+  transition: opacity 0.6s;
+}
+
+.fade-leave-active {
+  transition: opacity 0.3s;
+}
+
+.fade-enter-from, .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
