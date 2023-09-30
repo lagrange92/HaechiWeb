@@ -48,7 +48,7 @@ export default {
 
       naver.maps.onJSContentLoaded = async function () {
         try {
-          const response = await axios.get("http://localhost:1323/ppltn");
+          const response = await axios.get("http://localhost:1323/ppl");
           //   console.log(response.data);
 
           for (let i = 0; i < response.data.length; i++) {
