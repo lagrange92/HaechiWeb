@@ -2,26 +2,29 @@
   <div id="app">
     <div class="menu" :class="{ 'menu-open': menuOpen }">
       <div class="user">
+        <transition name="fade">
+          <p class="user-name" v-if="menuOpen">John Doe</p>
+        </transition>
         <v-btn class="collapse-btn" elevation="0" @click="menuOpen = !menuOpen">
           <span v-if="menuOpen">&laquo;</span>
           <span v-else>&raquo;</span>
         </v-btn>
       </div>
-      <transition name="fade">
-        <p class="user-name" v-if="menuOpen">John Doe</p>
-      </transition>
-
       <v-expansion-panels>
-        <v-expansion-panel title="Chatting" v-show="menuOpen">
-          <v-expansion-panel-text>
-            <ChatMenu />
-          </v-expansion-panel-text>
-        </v-expansion-panel>
-        <v-expansion-panel title="Routing" v-show="menuOpen">
-          <v-expansion-panel-text>
-            <RouteMenu />
-          </v-expansion-panel-text>
-        </v-expansion-panel>
+        <transition name="fade">
+          <v-expansion-panel title="Chatting" v-show="menuOpen">
+            <v-expansion-panel-text>
+              <ChatMenu />
+            </v-expansion-panel-text>
+          </v-expansion-panel>
+        </transition>
+        <transition name="fade">
+          <v-expansion-panel title="Routing" v-show="menuOpen">
+            <v-expansion-panel-text>
+              <RouteMenu />
+            </v-expansion-panel-text>
+          </v-expansion-panel>
+        </transition>
       </v-expansion-panels>
     </div>
     <NaverMap class="map" />
@@ -90,7 +93,7 @@ export default {
 .user {
   display: flex;
   height: 50px;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   padding: 0px;
   margin: 0px;
@@ -106,20 +109,12 @@ export default {
   align-items: center;
 }
 
-.transit-text {
-  transition: all 3s ease-in-out;
-}
-
 .collapse-btn {
   font-size: 24px;
 }
 
 .fade-enter-active {
-  transition: opacity 0.6s;
-}
-
-.fade-leave-active {
-  transition: opacity 0.3s;
+  transition: opacity 0.3s ease-out 0.3s;
 }
 
 .fade-enter-from, .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
