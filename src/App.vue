@@ -10,10 +10,14 @@
           <span v-else>&raquo;</span>
         </v-btn>
       </div>
-      <v-expansion-panels>
+      <v-expansion-panels v-model="panelOpen">
         <transition name="fade">
-          <v-expansion-panel title="Chatting" v-show="menuOpen">
-            <v-expansion-panel-text>
+          <v-expansion-panel
+            title="Chatting"
+            v-show="menuOpen"
+            v-model="panelOpen"
+          >
+            <v-expansion-panel-text style="margin-top: 10px">
               <ChatMenu />
             </v-expansion-panel-text>
           </v-expansion-panel>
@@ -33,7 +37,7 @@
 
 <script>
 import NaverMap from "./components/NaverMap.vue";
-import ChatMenu from "./components/menu/ChatMenu.vue";
+import ChatMenu from "./components/menu/Chat/ChatMenu.vue";
 import RouteMenu from "./components/menu/RouteMenu.vue";
 
 export default {
@@ -46,6 +50,7 @@ export default {
   data() {
     return {
       menuOpen: true,
+      panelOpen: [0], // expand panels which index is located in panelOpen array
     };
   },
   methods: {
@@ -81,11 +86,11 @@ export default {
 }
 
 .menu-open {
-  width: 20%;
+  width: 25%;
 }
 
 .map {
-  width: 80%;
+  width: 100%;
   height: 100%;
   background-color: white;
 }
@@ -93,7 +98,6 @@ export default {
 .user {
   display: flex;
   height: 50px;
-  justify-content: space-between;
   align-items: center;
   padding: 0px;
   margin: 0px;
@@ -119,5 +123,9 @@ export default {
 
 .fade-enter-from, .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+
+.menu .v-expansion-panel-text__wrapper {
+  padding: 5px 10px 5px 10px;
 }
 </style>

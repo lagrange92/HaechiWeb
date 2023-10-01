@@ -20,7 +20,6 @@ export default {
 <style>
 .directions {
   padding: 10px;
-  border-bottom: 1px solid #ccc;
 }
 
 .dropdown {
