@@ -1,5 +1,5 @@
 <template>
-  <div id="naver_map" style="width: 100%; height: 100vh"></div>
+  <div id="naver_map" style="height: 100vh"></div>
 </template>
 
 <script>

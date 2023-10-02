@@ -1,11 +1,11 @@
 <template>
-  <div>
-    <v-card
-      max-width="210px"
-      :text="content"
-      variant="elevated"
-      color="green-lighten-1"
-    >
+  <div :style="{ backgroundColor: 'purple-darken-2' }">
+    <v-card max-width="210px" variant="elevated" color="green-lighten-1">
+      <v-card-text>
+        <div v-for="(t, k) in content.split('\n')" :key="k">
+          {{ t }}
+        </div>
+      </v-card-text>
     </v-card>
   </div>
 </template>

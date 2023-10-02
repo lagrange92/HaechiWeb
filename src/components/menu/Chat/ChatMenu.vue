@@ -1,6 +1,14 @@
 <template>
-  <div>
-    <div class="chat-messages" ref="chatMessages">
+  <div class="chat-messages-container">
+    <div
+      class="chat-messages"
+      ref="chatMessages"
+      :style="{
+        backgroundColor: '#33691E',
+        padding: '10px',
+        borderRadius: '10px',
+      }"
+    >
       <div
         v-for="chat in chats"
         :key="chat.img_name"
@@ -24,7 +32,7 @@
     ></span>
     <ChatInput
       @new-message="sendMessage"
-      style="height: 50px; margin-top: 5px"
+      style="height: 100px; margin-top: 15px"
     />
   </div>
 </template>
@@ -140,10 +148,17 @@ export default {
 </script>
 
 <style>
+.chat-messages-container {
+  /* height: 800px; */
+  height: 100%;
+}
+
 .chat-messages {
   display: flex;
   flex-direction: column;
-  height: 400px;
+  /* height: 400px; */
+  /* height: 95%; */
+  height: 90%;
   overflow-y: scroll;
 }
 </style>

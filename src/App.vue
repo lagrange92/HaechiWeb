@@ -1,36 +1,42 @@
 <template>
   <div id="app">
-    <div class="menu" :class="{ 'menu-open': menuOpen }">
-      <div class="user">
-        <transition name="fade">
-          <p class="user-name" v-if="menuOpen">John Doe</p>
-        </transition>
-        <v-btn class="collapse-btn" elevation="0" @click="menuOpen = !menuOpen">
-          <span v-if="menuOpen">&laquo;</span>
-          <span v-else>&raquo;</span>
-        </v-btn>
-      </div>
-      <v-expansion-panels v-model="panelOpen">
-        <transition name="fade">
-          <v-expansion-panel
-            title="Chatting"
-            v-show="menuOpen"
-            v-model="panelOpen"
-          >
-            <v-expansion-panel-text style="margin-top: 10px">
-              <ChatMenu />
-            </v-expansion-panel-text>
-          </v-expansion-panel>
-        </transition>
-        <transition name="fade">
-          <v-expansion-panel title="Routing" v-show="menuOpen">
-            <v-expansion-panel-text>
-              <RouteMenu @resultPaths="getRoute" />
-            </v-expansion-panel-text>
-          </v-expansion-panel>
-        </transition>
-      </v-expansion-panels>
-    </div>
+    <v-layout class="menu-layout">
+      <v-navigation-drawer
+        :rail="rail"
+        :width="500"
+        permanent
+        @click="rail = false"
+        :style="{ backgroundColor: '#F1F8E9' }"
+      >
+        <v-list-item title="Hingy" nav class="menu-top">
+          <template v-slot:prepend>
+            <v-avatar :image="require('@/assets/white_cat.png')"> </v-avatar>
+          </template>
+          <template v-slot:append>
+            <v-btn
+              variant="text"
+              icon="mdi-chevron-left"
+              @click.stop="rail = !rail"
+            ></v-btn>
+          </template>
+        </v-list-item>
+        <div
+          style="
+             {
+              margin: 10px;
+              padding: 10px;
+              padding-right: 30px;
+            }
+          "
+          :style="{ height: chatboxHeight }"
+        >
+          <transition name="fade">
+            <ChatMenu v-show="!rail" class="chat-menu" />
+          </transition>
+        </div>
+      </v-navigation-drawer>
+      <v-main> </v-main>
+    </v-layout>
     <NaverMap class="map" :route="route" />
   </div>
 </template>
@@ -38,27 +44,46 @@
 <script>
 import NaverMap from "./components/NaverMap.vue";
 import ChatMenu from "./components/menu/Chat/ChatMenu.vue";
-import RouteMenu from "./components/menu/RouteMenu.vue";
-
-// const kakao = window.kakao;
 
 export default {
   name: "App",
   components: {
     NaverMap,
     ChatMenu,
-    RouteMenu,
+  },
+  mounted() {
+    window.addEventListener("resize", this.updateChatboxHeight);
+    this.updateChatboxHeight();
+
+    // Trick for loading naver map properly
+    this.$nextTick(() => {
+      this.rail = false;
+    });
+  },
+  beforeMount() {
+    window.removeEventListener("resize", this.updateChatboxHeight);
   },
   data() {
     return {
       menuOpen: true,
+      rail: true,
       panelOpen: [0], // expand panels which index is located in panelOpen array
       route: [],
+      chatboxHeight: "",
+      mainLayoutWidth: "",
+      mapKey: 0,
     };
   },
   methods: {
+    updateMapWidth() {},
+    updateChatboxHeight() {
+      const menuTopHeight = document.querySelector(".menu-top").offsetHeight;
+      const chatboxTopSpace = 40;
+      this.chatboxHeight = `${
+        window.innerHeight - chatboxTopSpace - menuTopHeight
+      }px`;
+    },
     getRoute(resultPaths) {
-      console.log("getRoute");
       console.log(resultPaths);
 
       this.route = resultPaths;
@@ -78,6 +103,7 @@ export default {
   width: 100%;
   height: 100vh;
   display: flex;
+  background-color: "purple-darken-2";
 }
 
 .menu {
@@ -85,10 +111,15 @@ export default {
   height: 100%;
   border-right: 1px solid grey;
   transition: all 0.4s ease-in-out;
+  margin-right: 20px;
 }
 
 .menu-open {
-  width: 25%;
+  width: 40%;
+}
+
+.chat-menu {
+  height: 100%;
 }
 
 .map {
