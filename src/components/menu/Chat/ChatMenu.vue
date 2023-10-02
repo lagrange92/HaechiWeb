@@ -34,6 +34,8 @@ import ChatBoxBot from "./ChatBoxBot.vue";
 import ChatBoxUser from "./ChatBoxUser.vue";
 import ChatInput from "./ChatInput.vue";
 
+import axios from "axios";
+
 export default {
   name: "ChatMenu",
   components: {
@@ -99,19 +101,39 @@ export default {
   },
   methods: {
     sendMessage(newMessage) {
-      if (newMessage) {
-        this.chats.push({
-          isBot: false,
-          img_name: "white_cat.png",
-          text: newMessage,
-        });
-
-        this.$nextTick(() => {
-          // scrollToBottom
-          this.$refs.chatMessages.scrollTop =
-            this.$refs.chatMessages.scrollHeight;
-        });
+      if (newMessage == "") {
+        return;
       }
+
+      this.chats.push({
+        isBot: false,
+        img_name: "white_cat.png",
+        text: newMessage,
+      });
+
+      this.$nextTick(() => {
+        // scrollToBottom
+        this.$refs.chatMessages.scrollTop =
+          this.$refs.chatMessages.scrollHeight;
+      });
+
+      axios
+        .post("http://localhost:1323/chat", {
+          prompt: newMessage,
+        })
+        .then((response) => {
+          this.chats.push({
+            isBot: true,
+            img_name: "black_cat.jpeg",
+            text: response.data,
+          });
+
+          this.$nextTick(() => {
+            // scrollToBottom
+            this.$refs.chatMessages.scrollTop =
+              this.$refs.chatMessages.scrollHeight;
+          });
+        });
     },
   },
 };
