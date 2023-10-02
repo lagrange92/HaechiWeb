@@ -5,7 +5,8 @@
       :text="content"
       variant="elevated"
       color="green-lighten-1"
-    ></v-card>
+    >
+    </v-card>
   </div>
 </template>
 
@@ -16,6 +17,10 @@ export default {
     content: {
       type: String,
       required: true,
+    },
+    cozy_places: {
+      type: Array,
+      default: () => [],
     },
   },
 };

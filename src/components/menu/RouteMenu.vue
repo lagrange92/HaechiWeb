@@ -1,14 +1,6 @@
 <template>
   <div class="directions">
-    <v-btn @click="dirClick">Direction API</v-btn>
-    <div class="dropdown">
-      <button class="dropdown-button">길찾기</button>
-      <div class="dropdown-content">
-        <p>Dropdown 1</p>
-        <p>Dropdown 2</p>
-        <p>Dropdown 3</p>
-      </div>
-    </div>
+    <v-btn @click="findRoute">길찾기</v-btn>
   </div>
 </template>
 
@@ -18,7 +10,7 @@
 export default {
   name: "RouteMenu",
   methods: {
-    dirClick() {
+    showRoute() {
       var paths = [
         [127.0819116, 37.5522246],
         [127.0817618, 37.5522826],
@@ -668,6 +660,14 @@ export default {
 
       this.$emit("resultPaths", paths);
     },
+
+    findRoute() {
+      window.open(
+        "https://map.kakao.com/link/to/신림역, 37.48424187396406, 126.92968999635784",
+        "_blank"
+      );
+    },
+
     dirClick_2() {
       // Successful API call for Direction API (start, goal, option)
       //   const start = "127.0811023106199,37.54972663553699";

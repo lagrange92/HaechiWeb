@@ -40,6 +40,8 @@ import NaverMap from "./components/NaverMap.vue";
 import ChatMenu from "./components/menu/Chat/ChatMenu.vue";
 import RouteMenu from "./components/menu/RouteMenu.vue";
 
+// const kakao = window.kakao;
+
 export default {
   name: "App",
   components: {
@@ -50,7 +52,7 @@ export default {
   data() {
     return {
       menuOpen: true,
-      panelOpen: [1], // expand panels which index is located in panelOpen array
+      panelOpen: [0], // expand panels which index is located in panelOpen array
       route: [],
     };
   },

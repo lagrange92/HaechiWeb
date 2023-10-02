@@ -1,8 +1,8 @@
 <template>
-  <div class="chat-box-bot">
-    <ChatImg :img_name="img" />
-    <span style="margin-left: 10px"></span>
+  <div class="chat-box-user">
     <ChatContent :content="content" />
+    <span style="margin-left: 10px"></span>
+    <ChatImg :img_name="img" />
   </div>
 </template>
 
@@ -11,7 +11,7 @@ import ChatImg from "./ChatImg.vue";
 import ChatContent from "./ChatContent.vue";
 
 export default {
-  name: "BotMsgBox",
+  name: "UserMsgBox",
   components: {
     ChatImg,
     ChatContent,
@@ -30,10 +30,10 @@ export default {
 </script>
 
 <style>
-.chat-box-bot {
+.chat-box-user {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: flex-end;
   align-items: center;
 }
 </style>

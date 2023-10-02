@@ -10,6 +10,7 @@
           v-if="chat.isBot"
           :img="chat.img_name"
           :content="chat.text"
+          :cozy_places="chat.cozy_places"
         />
         <ChatBoxUser v-else :img="chat.img_name" :content="chat.text" />
       </div>
@@ -29,8 +30,8 @@
 </template>
 
 <script>
-import ChatBoxBot from "./ChatBoxUser.vue";
-import ChatBoxUser from "./ChatBoxBot.vue";
+import ChatBoxBot from "./ChatBoxBot.vue";
+import ChatBoxUser from "./ChatBoxUser.vue";
 import ChatInput from "./ChatInput.vue";
 
 export default {
@@ -43,19 +44,56 @@ export default {
   data() {
     return {
       chats: [
-        { img_name: "black_cat.jpeg", isBot: true, text: "Hello" },
+        {
+          img_name: "black_cat.jpeg",
+          isBot: true,
+          text: "Hello",
+          cozy_places: [
+            {
+              name: "신림역",
+              latitude: 37.48424187396406,
+              longitude: 126.92968999635784,
+            },
+          ],
+        },
         {
           img_name: "white_cat.png",
           isBot: false,
           text: "How are you?",
         },
-        { img_name: "black_cat.jpeg", isBot: true, text: "Hello" },
+        {
+          img_name: "black_cat.jpeg",
+          isBot: true,
+          text: "Hello",
+          cozy_places: [],
+        },
         {
           img_name: "white_cat.png",
           isBot: false,
           text: "How are you?",
         },
-        { img_name: "black_cat.jpeg", isBot: true, text: "Hello" },
+        {
+          img_name: "black_cat.jpeg",
+          isBot: true,
+          text: "Hello",
+          cozy_places: [
+            {
+              name: "신림역",
+              latitude: 37.48424187396406,
+              longitude: 126.92968999635784,
+            },
+            {
+              name: "신림역",
+              latitude: 37.48424187396406,
+              longitude: 126.92968999635784,
+            },
+            {
+              name: "신림역",
+              latitude: 37.48424187396406,
+              longitude: 126.92968999635784,
+            },
+          ],
+        },
       ],
     };
   },
