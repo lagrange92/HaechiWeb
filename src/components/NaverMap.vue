@@ -5,7 +5,16 @@
 <script>
 import axios from "axios";
 
+const naver = window.naver;
+let naverMap;
+
 export default {
+  props: {
+    route: {
+      type: Array,
+      default: () => [],
+    },
+  },
   components: {},
   name: "NaverMap",
   mounted() {
@@ -13,13 +22,12 @@ export default {
   },
   methods: {
     initMap() {
-      const naver = window.naver;
       const mapOptions = {
         center: new naver.maps.LatLng(37.541, 126.986),
         minZoom: 12,
         zoom: 12,
       };
-      const naverMap = new naver.maps.Map("naver_map", mapOptions);
+      naverMap = new naver.maps.Map("naver_map", mapOptions);
 
       //   var heatmapData = [
       //   new naver.maps.visualization.WeightedLocation(37.541, 126.986, 0.1),
@@ -70,10 +78,64 @@ export default {
             radius: 70,
             colorMap: naver.maps.visualization.SpectrumStyle.RdBu,
           });
+
+          console.log("naver map init");
+          console.log(this.route);
         } catch (error) {
           console.error("API 호출 중 오류 발생:", error);
         }
       };
+    },
+  },
+  watch: {
+    route() {
+      new naver.maps.Polyline({
+        map: naverMap,
+        path: this.route,
+        strokeColor: "#1E88E5",
+        strokeWeight: 5,
+      });
+
+      let startMarker = new naver.maps.Marker({
+        map: naverMap,
+        position: this.route[0],
+      });
+
+      let goalMarker = new naver.maps.Marker({
+        map: naverMap,
+        position: this.route[this.route.length - 1],
+      });
+
+      var startInfo = new naver.maps.InfoWindow({
+        content: "어린이대공원",
+      });
+
+      var goalInfo = new naver.maps.InfoWindow({
+        content: "신림역",
+      });
+
+      naver.maps.Event.addListener(startMarker, "click", function () {
+        if (startInfo.getMap()) {
+          startInfo.close();
+        } else {
+          startInfo.open(naverMap, startMarker);
+        }
+      });
+
+      naver.maps.Event.addListener(goalMarker, "click", function () {
+        if (goalInfo.getMap()) {
+          goalInfo.close();
+        } else {
+          goalInfo.open(naverMap, goalMarker);
+        }
+      });
+
+      //   this.route.forEach((point) => {
+      //     new naver.maps.Marker({
+      //       map: naverMap,
+      //       position: point,
+      //     });
+      //   });
     },
   },
 };

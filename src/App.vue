@@ -25,13 +25,13 @@
         <transition name="fade">
           <v-expansion-panel title="Routing" v-show="menuOpen">
             <v-expansion-panel-text>
-              <RouteMenu />
+              <RouteMenu @resultPaths="getRoute" />
             </v-expansion-panel-text>
           </v-expansion-panel>
         </transition>
       </v-expansion-panels>
     </div>
-    <NaverMap class="map" />
+    <NaverMap class="map" :route="route" />
   </div>
 </template>
 
@@ -50,16 +50,16 @@ export default {
   data() {
     return {
       menuOpen: true,
-      panelOpen: [0], // expand panels which index is located in panelOpen array
+      panelOpen: [1], // expand panels which index is located in panelOpen array
+      route: [],
     };
   },
   methods: {
-    onChatMenuInput() {
-      console.log("onChatMenuInput");
-      this.chatMenuOpen = !this.chatMenuOpen;
-    },
-    onChatMenuHeaderClick() {
-      console.log("onChatMenuHeaderClick");
+    getRoute(resultPaths) {
+      console.log("getRoute");
+      console.log(resultPaths);
+
+      this.route = resultPaths;
     },
   },
 };
