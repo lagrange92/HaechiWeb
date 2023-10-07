@@ -1,13 +1,19 @@
 <template>
-  <div class="chat-input" :style="{ backgrounColor: 'red' }">
+  <div class="chat-input">
     <textarea
       v-model="newMessage"
       class="input-border"
+      :style="{ color: 'white', height: '100%' }"
       @keydown.enter="updateMessage"
     />
-    <v-btn @click="sendMessage" color="green-darken-1" height="100%"
-      >Send</v-btn
-    >
+    <div class="btn-cont">
+      <v-btn
+        @click="sendMessage"
+        color="green-darken-1"
+        :style="{ height: '100%' }"
+        >Send</v-btn
+      >
+    </div>
   </div>
 </template>
 
@@ -50,14 +56,20 @@ export default {
 }
 
 .chat-input textarea {
-  width: 80%;
+  width: 100%;
   resize: none;
   padding: 10px;
 }
 
-.chat-input v-btn {
+.chat-input .btn-cont {
+  height: 100%;
+  padding-left: 10px;
+}
+
+.chat-input .btn-cont v-btn {
   border: none;
   cursor: pointer;
+  width: 100%;
 }
 
 .input-border {
@@ -65,8 +77,5 @@ export default {
   border-radius: 5px; /* 테두리 선 둥글게 처리 */
   box-shadow: 0 0 5px #ccc; /* 시어 효과 지정 */
   height: 100%;
-  /* margin: 0px 10px 0px 0px; */
-  /* margin-right: 10px; */
-  /* padding: 5px; */
 }
 </style>

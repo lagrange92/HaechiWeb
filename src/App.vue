@@ -1,43 +1,69 @@
 <template>
-  <div id="app">
-    <v-layout class="menu-layout">
+  <div class="app">
+    <v-layout class="menu-layout" justify-end>
       <v-navigation-drawer
-        :rail="rail"
-        :width="500"
-        permanent
+        rail
+        class="menu-drawer"
+        expand-on-hover
+        @mouseover="menuExpand = true"
+        @mouseleave="menuExpand = false"
         @click="rail = false"
-        :style="{ backgroundColor: '#F1F8E9' }"
+        :style="{ backgroundColor: 'rgba(51, 105, 30, 0.6)', color: 'white' }"
       >
-        <v-list-item title="Hingy" nav class="menu-top">
-          <template v-slot:prepend>
-            <v-avatar :image="require('@/assets/white_cat.png')"> </v-avatar>
-          </template>
-          <template v-slot:append>
-            <v-btn
-              variant="text"
-              icon="mdi-chevron-left"
-              @click.stop="rail = !rail"
-            ></v-btn>
-          </template>
-        </v-list-item>
-        <div
-          style="
-             {
-              margin: 10px;
-              padding: 10px;
-              padding-right: 30px;
-            }
-          "
-          :style="{ height: chatboxHeight }"
-        >
-          <transition name="fade">
-            <ChatMenu v-show="!rail" class="chat-menu" />
-          </transition>
+        <div>
+          <v-list density="compact" nav>
+            <v-list-item
+              prepend-icon="mdi-home"
+              title="Home"
+              @click="clickHome()"
+            ></v-list-item>
+            <v-list-item
+              prepend-icon="mdi-chat"
+              title="Chat"
+              @click="clickChat()"
+            ></v-list-item>
+            <v-list-item
+              prepend-icon="mdi-map"
+              title="Map"
+              @click="clickMap()"
+            ></v-list-item>
+          </v-list>
+        </div>
+        <div>
+          <v-divider></v-divider>
+
+          <v-list density="compact" nav>
+            <v-list-item title="Hingy" nav class="menu-top">
+              <template v-slot:prepend>
+                <v-avatar
+                  :image="require('@/assets/white_cat.png')"
+                  @click.stop="rail = !rail"
+                >
+                </v-avatar>
+              </template>
+            </v-list-item>
+            <v-list-item
+              prepend-icon="mdi-cog"
+              title="Setting"
+              value="Setting"
+            ></v-list-item>
+          </v-list>
         </div>
       </v-navigation-drawer>
       <v-main> </v-main>
     </v-layout>
-    <NaverMap class="map" :route="route" />
+    <div class="main-cont" :class="{ 'shrink-main-cont': menuExpand }">
+      <transition name="fade">
+        <div class="chat-cont" :class="{ 'shrink-cont': showMode == 'map' }">
+          <ChatMenu class="chat-menu" />
+        </div>
+      </transition>
+      <transition name="fade">
+        <div class="map-cont" :class="{ 'shrink-cont': showMode == 'chat' }">
+          <NaverMap :route="route" />
+        </div>
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -57,6 +83,7 @@ export default {
 
     // Trick for loading naver map properly
     this.$nextTick(() => {
+      this.showMode = "home";
       this.rail = false;
     });
   },
@@ -65,7 +92,8 @@ export default {
   },
   data() {
     return {
-      menuOpen: true,
+      showMode: "map", // showMode - home, chat, map
+      menuExpand: false,
       rail: true,
       panelOpen: [0], // expand panels which index is located in panelOpen array
       route: [],
@@ -88,6 +116,23 @@ export default {
 
       this.route = resultPaths;
     },
+    clickHome() {
+      this.showMode = "home";
+    },
+    clickChat() {
+      if (this.showMode === "chat") {
+        this.showMode = "home";
+      } else {
+        this.showMode = "chat";
+      }
+    },
+    clickMap() {
+      if (this.showMode === "map") {
+        this.showMode = "home";
+      } else {
+        this.showMode = "map";
+      }
+    },
   },
 };
 </script>
@@ -99,19 +144,59 @@ export default {
   box-sizing: border-box;
 }
 
-#app {
+.app {
   width: 100%;
   height: 100vh;
   display: flex;
-  background-color: "purple-darken-2";
+  background-image: url("@/assets/background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
-.menu {
-  width: 70px;
+.menu-drawer:hover {
+  width: 10% !important;
+  transition: width 0.55s;
+}
+
+.main-cont {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
   height: 100%;
-  border-right: 1px solid grey;
-  transition: all 0.4s ease-in-out;
-  margin-right: 20px;
+  justify-content: space-around;
+  align-items: center;
+  transition: width 0.5s;
+}
+
+.shrink-main-cont {
+  width: 90%;
+  transition: width 0.5s;
+}
+
+.chat-cont {
+  padding: 10px;
+  padding-left: 20px;
+  width: 100%;
+  height: 90%;
+  transition: width 0.5s;
+}
+
+.map-cont {
+  padding: 10px;
+  padding-right: 20px;
+  width: 100%;
+  height: 90%;
+  transition: width 0.5s;
+}
+
+.shrink-cont {
+  width: 0%;
+  transition: width 0.5s;
+}
+
+.menu-top {
+  cursor: pointer;
 }
 
 .menu-open {
@@ -120,12 +205,6 @@ export default {
 
 .chat-menu {
   height: 100%;
-}
-
-.map {
-  width: 100%;
-  height: 100%;
-  background-color: white;
 }
 
 .user {
@@ -150,15 +229,19 @@ export default {
   font-size: 24px;
 }
 
-.fade-enter-active {
-  transition: opacity 0.3s ease-out 0.3s;
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s ease;
 }
 
 .fade-enter-from, .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
 }
 
-.menu .v-expansion-panel-text__wrapper {
-  padding: 5px 10px 5px 10px;
+.menu-layout .v-navigation-drawer__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  opacity: 0.5;
 }
 </style>

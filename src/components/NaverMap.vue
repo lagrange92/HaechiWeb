@@ -1,5 +1,5 @@
 <template>
-  <div id="naver_map" style="height: 100vh"></div>
+  <div id="naver_map" class="naver-map"></div>
 </template>
 
 <script>
@@ -23,7 +23,7 @@ export default {
   methods: {
     initMap() {
       const mapOptions = {
-        center: new naver.maps.LatLng(37.541, 126.986),
+        center: new naver.maps.LatLng(37.535, 127.116),
         minZoom: 12,
         zoom: 12,
       };
@@ -141,4 +141,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.naver-map {
+  height: 100%;
+  border-radius: 10px;
+}
+</style>

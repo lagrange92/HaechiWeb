@@ -1,39 +1,30 @@
 <template>
-  <div class="chat-messages-container">
-    <div
-      class="chat-messages"
-      ref="chatMessages"
-      :style="{
-        backgroundColor: '#33691E',
-        padding: '10px',
-        borderRadius: '10px',
-      }"
-    >
+  <div
+    class="chat-messages-container"
+    :style="{ backgroundColor: 'rgba(51, 105, 30, 0.6)' }"
+  >
+    <div class="chat-inner-cont">
       <div
-        v-for="chat in chats"
-        :key="chat.img_name"
-        style="padding-bottom: 20px"
+        class="chat-messages"
+        ref="chatMessages"
+        :style="{ backgroundColor: '#DCEDC8', opacity: 0.8 }"
       >
-        <ChatBoxBot
-          v-if="chat.isBot"
-          :img="chat.img_name"
-          :content="chat.text"
-          :cozy_places="chat.cozy_places"
-        />
-        <ChatBoxUser v-else :img="chat.img_name" :content="chat.text" />
+        <div
+          v-for="chat in chats"
+          :key="chat.img_name"
+          style="padding-bottom: 20px"
+        >
+          <ChatBoxBot
+            v-if="chat.isBot"
+            :img="chat.img_name"
+            :content="chat.text"
+            :cozy_places="chat.cozy_places"
+          />
+          <ChatBoxUser v-else :img="chat.img_name" :content="chat.text" />
+        </div>
       </div>
+      <ChatInput class="chat-input" @new-message="sendMessage" />
     </div>
-    <span
-      style="
-         {
-          margin-bottom: 20px;
-        }
-      "
-    ></span>
-    <ChatInput
-      @new-message="sendMessage"
-      style="height: 100px; margin-top: 15px"
-    />
   </div>
 </template>
 
@@ -149,16 +140,29 @@ export default {
 
 <style>
 .chat-messages-container {
-  /* height: 800px; */
   height: 100%;
+  border-radius: 10px;
+}
+
+.chat-inner-cont {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 20px;
 }
 
 .chat-messages {
   display: flex;
   flex-direction: column;
-  /* height: 400px; */
-  /* height: 95%; */
   height: 90%;
   overflow-y: scroll;
+  background-color: yellowgreen;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.chat-input {
+  height: 7%;
 }
 </style>
