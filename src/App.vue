@@ -55,7 +55,7 @@
     <div class="main-cont" :class="{ 'shrink-main-cont': menuExpand }">
       <transition name="fade">
         <div class="chat-cont" :class="{ 'shrink-cont': showMode == 'map' }">
-          <ChatMenu class="chat-menu" />
+          <ChatMenu class="chat-menu" @routeChange="routeChange" />
         </div>
       </transition>
       <transition name="fade">
@@ -132,6 +132,11 @@ export default {
       } else {
         this.showMode = "map";
       }
+    },
+    routeChange(value) {
+      //   console.log("emited route");
+      //   console.log(value);
+      this.route = value;
     },
   },
 };

@@ -42,6 +42,12 @@ export default {
     ChatBoxUser,
     ChatInput,
   },
+  props: {
+    route: {
+      type: Array,
+      default: () => [],
+    },
+  },
   data() {
     return {
       chats: [
@@ -124,8 +130,16 @@ export default {
           this.chats.push({
             isBot: true,
             img_name: "black_cat.jpeg",
-            text: response.data,
+            text: response.data.chat,
           });
+
+          //   console.log(response.data);
+          //   console.log(response.data.chat);
+          //   console.log(response.data.suggest);
+
+          this.routes = JSON.parse(response.data.suggest);
+
+          this.$emit("routeChange", this.routes);
 
           this.$nextTick(() => {
             // scrollToBottom

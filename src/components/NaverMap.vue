@@ -89,6 +89,9 @@ export default {
   },
   watch: {
     route() {
+      //   console.log("route changed in NaverMap component");
+      //   console.log(this.route);
+
       new naver.maps.Polyline({
         map: naverMap,
         path: this.route,
@@ -107,11 +110,11 @@ export default {
       });
 
       var startInfo = new naver.maps.InfoWindow({
-        content: "어린이대공원",
+        content: this.route[0].name,
       });
 
       var goalInfo = new naver.maps.InfoWindow({
-        content: "신림역",
+        content: this.route[this.route.length - 1].name,
       });
 
       naver.maps.Event.addListener(startMarker, "click", function () {
@@ -130,12 +133,12 @@ export default {
         }
       });
 
-      //   this.route.forEach((point) => {
-      //     new naver.maps.Marker({
-      //       map: naverMap,
-      //       position: point,
-      //     });
-      //   });
+      this.route.forEach((point) => {
+        new naver.maps.Marker({
+          map: naverMap,
+          position: point,
+        });
+      });
     },
   },
 };
